@@ -1,0 +1,226 @@
+﻿@model BizComponent.ReturnResult
+@{
+    ViewBag.Title = "SEO Analyser";
+}
+
+<br />
+<div class="row">
+    <form method="post" action="/" id="seoinputform">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="form-group">
+                    <label for="txtInput">Input Text / URL</label>
+                    
+                    <!--html tags are not allowed. it will throw error : "Potentially Dangerous Request.form..." -->
+                    @Html.TextAreaFor(model => model.TextSearch, new { @class = "form-control", @id = "txtInput" })
+                    <small>* Enter text or valid url (e.g http://www.seoanalyser.com/) </small>
+                </div>
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label for="Checkbox1">
+                            @Html.CheckBoxFor(m => m.FilterStopWords, new { @checked = "checked" })
+                            Filter Stop-Words
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label for="Checkbox2">
+                            @Html.CheckBoxFor(m => m.ShowWordOccurence, new { @checked = "checked" })
+                            Number Of Word Occurences
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label for="Checkbox3">
+                            @Html.CheckBoxFor(m => m.ShowMetaOccurence, new { @checked = "checked" })
+                            Number Of Occurrences (Word Listed In Meta Tags)
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label for="Checkbox4">
+                            @Html.CheckBoxFor(m => m.ShowLinks, new { @checked = "checked" })
+                            External Links
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <center>
+                    <input id="Submit1" type="submit" value="SUBMIT" class="btn btn-primary" onclick="return validateNoHtml();" />
+                </center>
+            </div>
+        </div>
+    </form>
+</div>
+@if (Model != null && Model.Result)
+{
+    if (Model.ShowWordOccurence)
+    {
+        <div class="row">
+            <div class="panel panel-info">
+                <div class="panel-heading">Word Occurences</div>
+                <div class="panel-body">
+                    <span class="red">* To do sorting, click on table column header</span>
+                    <table id="tbl1" class="table table-responsive table-striped">
+                        <thead>
+                            <tr>
+                                <th onclick="sortTable('tbl1',0)">Word</th>
+                                <th onclick="sortTable('tbl1',1)">No Of Occurence</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.WordsOccurences)
+                            {
+                                <tr>
+                                    <td>@item.Word</td>
+                                    <td>@item.NoOfOccurences</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+
+    if (Model.ShowMetaOccurence)
+    {
+        <div class="row">
+
+            <div class="panel panel-info">
+                <div class="panel-heading">Word Occurences(Meta)</div>
+                <div class="panel-body">
+                    <span class="red">* To do sorting, click on table column header</span>
+                    <table id="tbl2" class="table table-responsive table-striped">
+                        <thead>
+                            <tr>
+                                <th onclick="sortTable('tbl2',0)">Word</th>
+                                <th onclick="sortTable('tbl2',1)">No Of Occurence</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.MetaOccurences)
+                            {
+                                <tr>
+                                    <td>@item.Word</td>
+                                    <td>@item.NoOfOccurences</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    }
+
+    if (Model.ShowLinks)
+    {
+        <div class="row">
+
+            <div class="panel panel-info">
+                <div class="panel-heading">External Links</div>
+                <div class="panel-body">
+                    <span class="red">* To do sorting, click on table column header</span>
+                    <table id="tbl3" class="table table-responsive table-striped">
+                        <thead>
+                            <tr>
+                                <th onclick="sortTable('tbl3',0)">Links</th>
+                                <th onclick="sortTable('tbl3',1)">Title</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Links)
+                            {
+                                <tr>
+                                    <td><a href="@item.HREF">@item.HREF</a></td>
+                                    <td>@item.Text</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    }
+}
+@if (Model != null && !Model.Result)
+{
+    <div class="row">
+
+        <div class="panel panel-danger">
+            <div class="panel-heading">ERROR</div>
+            <div class="panel-body">
+                @Model.ErrorMessage
+            </div>
+        </div>
+
+    </div>
+}
+<script>
+    function sortTable(tableid, n) {
+        var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+        table = document.getElementById(tableid);
+        switching = true;
+        //Set the sorting direction to ascending:
+        dir = "asc";
+        /*Make a loop that will continue until
+        no switching has been done:*/
+        while (switching) {
+            //start by saying: no switching is done:
+            switching = false;
+            rows = table.getElementsByTagName("TR");
+            /*Loop through all table rows (except the
+            first, which contains table headers):*/
+            for (i = 1; i < (rows.length - 1); i++) {
+                //start by saying there should be no switching:
+                shouldSwitch = false;
+                /*Get the two elements you want to compare,
+                one from current row and one from the next:*/
+                x = rows[i].getElementsByTagName("TD")[n];
+                y = rows[i + 1].getElementsByTagName("TD")[n];
+                /*check if the two rows should switch place,
+                based on the direction, asc or desc:*/
+                if (dir == "asc") {
+                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                        //if so, mark as a switch and break the loop:
+                        shouldSwitch = true;
+                        break;
+                    }
+                } else if (dir == "desc") {
+                    if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                        //if so, mark as a switch and break the loop:
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+            }
+            if (shouldSwitch) {
+                /*If a switch has been marked, make the switch
+                and mark that a switch has been done:*/
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+                //Each time a switch is done, increase this count by 1:
+                switchcount++;
+            } else {
+                /*If no switching has been done AND the direction is "asc",
+                set the direction to "desc" and run the while loop again.*/
+                if (switchcount == 0 && dir == "asc") {
+                    dir = "desc";
+                    switching = true;
+                }
+            }
+        }
+    }
+
+    function validateNoHtml()
+    {
+        str = (document.getElementById('txtInput')).value;
+        if (str.match(/([\<])([^\>]{1,})*([\>])/i) == null)
+            return true;
+        else {
+            alert('HTML tags not allowed.');
+            return false;
+        }
+    }
+
+</script>

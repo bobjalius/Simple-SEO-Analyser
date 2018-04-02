@@ -1,0 +1,9 @@
+c:\users\bobnb\documents\visual studio 2017\Projects\SimpleSEOAnalyser\BizComponent\obj\Debug\BizComponent.csproj.CoreCompileInputs.cache
+c:\users\bobnb\documents\visual studio 2017\Projects\SimpleSEOAnalyser\BizComponent\bin\Debug\BizComponent.dll
+c:\users\bobnb\documents\visual studio 2017\Projects\SimpleSEOAnalyser\BizComponent\bin\Debug\BizComponent.pdb
+c:\users\bobnb\documents\visual studio 2017\Projects\SimpleSEOAnalyser\BizComponent\obj\Debug\BizComponent.dll
+c:\users\bobnb\documents\visual studio 2017\Projects\SimpleSEOAnalyser\BizComponent\obj\Debug\BizComponent.pdb
+c:\users\bobnb\documents\visual studio 2017\Projects\SimpleSEOAnalyser\BizComponent\bin\Debug\HtmlAgilityPack.dll
+c:\users\bobnb\documents\visual studio 2017\Projects\SimpleSEOAnalyser\BizComponent\bin\Debug\HtmlAgilityPack.pdb
+c:\users\bobnb\documents\visual studio 2017\Projects\SimpleSEOAnalyser\BizComponent\bin\Debug\HtmlAgilityPack.xml
+C:\Users\BOBNB\documents\visual studio 2017\Projects\SimpleSEOAnalyser\BizComponent\bin\Debug\BizComponent.dll.config
